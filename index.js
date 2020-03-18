@@ -87,16 +87,13 @@ module.exports = function({ S3_CONN_CONFIG, BUCKET_NAME, S3_ENDPOINT }) {
 // module
 // 	.exports({
 // 		S3_CONN_CONFIG: {
-// 			apiVersion: "2006-03-01",
-// 			region: "us-west-2",
-// 			signatureVersion: "v4",
-// 			accessKeyId: process.env.S3_ACCESS_KEY,
-// 			secretAccessKey: process.env.S3_SECRET_KEY,
+// 			accessKeyId: "",
+// 			secretAccessKey: "",
 // 		},
-// 		BUCKET_NAME: "test-bucket-orderstack",
-// 		UPLOAD_MAX_FILE_SIZE: 5048576,
+// 		BUCKET_NAME: "",
+// 		S3_ENDPOINT: ""
 // 	})
-// 	.getURLForDownload({Key: "test.txt", Expires: 60})
+// 	.getURLForDownload({Key: "Zydus/test.txt", Expires: 60})
 // 	.then(data => {
 // 		//to print form data fields.
 // 		// Object.keys(data.fields).forEach(k => {
