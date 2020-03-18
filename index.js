@@ -1,25 +1,17 @@
 let aws = require("aws-sdk")
-const dotenv = require("dotenv")
-dotenv.config()
 
-module.exports = function({
-	S3_CONN_CONFIG,
-	BUCKET_NAME,
-	S3_ENDPOINT,
-	UPLOAD_MAX_FILE_SIZE,
-}) {
+module.exports = function({ S3_CONN_CONFIG, BUCKET_NAME, S3_ENDPOINT }) {
 	let S3Instance = new aws.S3({
 		...(S3_ENDPOINT && { endpoint: new aws.Endpoint(S3_ENDPOINT) }),
 		...S3_CONN_CONFIG,
 	})
 
 	return {
-		uploadFileData: (fileData, uploadPath) => {
+		uploadFileData: paramArgs => {
 			return new Promise((resolve, reject) => {
 				let params = {
 					Bucket: BUCKET_NAME,
-					Key: uploadPath,
-					Body: fileData,
+					...paramArgs,
 				}
 				S3Instance.upload(params, function(err, data) {
 					if (err) {
@@ -31,24 +23,26 @@ module.exports = function({
 			})
 		},
 
-		getURLForUpload: (uploadPath, expiry) => {
+		getURLForUpload: paramArgs => {
 			return new Promise((resolve, reject) => {
 				try {
+					let params = {
+						Bucket: BUCKET_NAME,
+						...paramArgs,
+						// Conditions: [
+						// 	[
+						// 		"content-length-range",
+						// 		1,
+						// 		UPLOAD_MAX_FILE_SIZE,
+						// 	],
+						// ],
+						// Fields: {
+						// 	key: uploadPath,
+						// },
+						// Expires: Number(expiry),
+					}
 					S3Instance.createPresignedPost(
-						{
-							Bucket: BUCKET_NAME,
-							Conditions: [
-								[
-									"content-length-range",
-									1,
-									UPLOAD_MAX_FILE_SIZE,
-								],
-							],
-							Fields: {
-								key: uploadPath,
-							},
-							Expires: Number(expiry),
-						},
+						params,
 						(err, preSignedRequest) => {
 							if (err) {
 								console.error("File upload error: ", err)
@@ -63,13 +57,14 @@ module.exports = function({
 				}
 			})
 		},
-		getURLForDownload: (filePath, expiry) => {
+		getURLForDownload: paramArgs => {
 			return new Promise((resolve, reject) => {
 				try {
 					var params = {
 						Bucket: BUCKET_NAME,
-						Key: filePath,
-						Expires: expiry,
+						...paramArgs,
+						// Key: filePath,
+						// Expires: expiry,
 					}
 					S3Instance.getSignedUrl("getObject", params, function(
 						err,
@@ -101,7 +96,7 @@ module.exports = function({
 // 		BUCKET_NAME: "test-bucket-orderstack",
 // 		UPLOAD_MAX_FILE_SIZE: 5048576,
 // 	})
-// 	.getURLForDownload("test.txt", 60)
+// 	.getURLForDownload({Key: "test.txt", Expires: 60})
 // 	.then(data => {
 // 		//to print form data fields.
 // 		// Object.keys(data.fields).forEach(k => {
