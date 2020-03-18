@@ -13,6 +13,6 @@
     "eslint": "^6.5.1"
   },
   "dependencies": {
-    "aws-sdk": "^2.549.0"
+    "aws-sdk": "^2.641.0"
   }
 }
