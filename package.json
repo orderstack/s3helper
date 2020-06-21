@@ -1,18 +1,25 @@
 {
-  "name": "@orderstack/s3helper",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "babel-eslint": "^10.0.3",
-    "eslint": "^6.5.1"
-  },
-  "dependencies": {
-    "aws-sdk": "^2.641.0"
-  }
+	"name": "@orderstack/s3helper",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/orderstack/s3helper.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"babel-eslint": "^10.0.3",
+		"eslint": "^6.5.1"
+	},
+	"dependencies": {
+		"aws-sdk": "^2.641.0"
+	}
 }
